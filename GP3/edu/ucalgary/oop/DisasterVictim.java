@@ -1,9 +1,8 @@
 /*
-Author: Brandon Nguyen
-Date 03/03
-
-Changed Array to Linked List. 
-
+ 03/04
+ Author: Brandon Nguyen
+ Changes: Modifyed DisasterVictim to check off requirement 2. 
+ (Have not tested)
  */
 
 package edu.ucalgary.oop;
@@ -88,7 +87,6 @@ public class DisasterVictim {
         return new LinkedList<>(personalBelongings);
     }
 
-    // Correct the setters to accept Lists instead of arrays
     public void setFamilyConnections(LinkedList<FamilyRelation> connections) {
         this.familyConnections = new LinkedList<>(connections);
     }
@@ -101,25 +99,25 @@ public class DisasterVictim {
         this.personalBelongings = new LinkedList<>(belongings);
     }
 
-    // Add a Supply to personalBelonging
     public void addPersonalBelonging(Supply supply) {
         personalBelongings.add(supply);
     }
 
-    // Remove a Supply from personalBelongings
     public void removePersonalBelonging(Supply unwantedSupply) {
         personalBelongings.remove(unwantedSupply);
     }
 
     public void removeFamilyConnection(FamilyRelation exRelation) {
         familyConnections.remove(exRelation);
+        // Ensure two-sided relationship is removed
+        exRelation.getPersonOne().removeFamilyConnection(exRelation);
+        exRelation.getPersonTwo().removeFamilyConnection(exRelation);
     }
-
+    
     public void addFamilyConnection(FamilyRelation record) {
         familyConnections.add(record);
     }
 
-    // Add a MedicalRecord to medicalRecords
     public void addMedicalRecord(MedicalRecord record) {
         medicalRecords.add(record);
     }
@@ -144,6 +142,6 @@ public class DisasterVictim {
         if (!gender.matches("(?i)^(male|female|other)$")) {
             throw new IllegalArgumentException("Invalid gender. Acceptable values are male, female, or other.");
         }
-        this.gender = gender.toLowerCase(); // Store in a consistent format
+        this.gender = gender.toLowerCase();
     }
 }
